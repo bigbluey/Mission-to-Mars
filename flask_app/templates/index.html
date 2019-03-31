@@ -14,7 +14,7 @@
       <h1>Mission to Mars</h1>
         <p><a class="btn btn-primary btn-lg" href="/scrape" role="button">Scrape New Data</a></p>
     </div>
-    <!-- Mars News -->
+    <!-- NASA Mars News -->
     <div class="row" id="mars-news">
       <div class="col-md-12">
         <div class="media">
@@ -26,7 +26,14 @@
         </div>
       </div>
     </div>
-
+    <!-- JPL Mars Space Images - Featured Image -->
+    <div class="row" id="mars-featured-image">
+        <div class="col-md-8">
+          <h2>Featured Mars Image</h2>
+            <!-- If Images are False/None/Non-Existent, Then Default to Error Message -->
+            <img src="{{mars.featured_image | default('static/images/error.png', true) }}" class="img-responsive"
+            alt="Responsive image">
+        </div>
 
 </body>
 </html>
