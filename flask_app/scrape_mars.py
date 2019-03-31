@@ -1,5 +1,6 @@
-# Jupyter Notebook Conversion Into Python Script
-
+#################################################
+# Jupyter Notebook Conversion to Python Script
+#################################################
 
 # Dependencies and Setup
 from bs4 import BeautifulSoup
@@ -7,19 +8,24 @@ from splinter import Browser
 import pandas as pd
 import datetime as dt
 
-#### Mac
+#################################################
+# Mac
+#################################################
 # Set Executable Path & Initialize Chrome Browser
 executable_path = {"executable_path": "/usr/local/bin/chromedriver"}
 browser = Browser("chrome", **executable_path, headless=False)
 
-#### Windows
+#################################################
+# Windows
+#################################################
 # Set Executable Path & Initialize Chrome Browser
 # executable_path = {"executable_path": "./chromedriver.exe"}
 # browser = Browser("chrome", **executable_path)
 
 
-### NASA Mars News
-
+#################################################
+# NASA Mars News
+#################################################
 # NASA Mars News Site Web Scraper
 def mars_news(browser):
     # Visit the NASA Mars News Site
@@ -50,8 +56,9 @@ def mars_news(browser):
     return news_title, news_paragraph
 
 
-### JPL Mars Space Images - Featured Image
-
+#################################################
+# JPL Mars Space Images - Featured Image
+#################################################
 # NASA JPL (Jet Propulsion Laboratory) Site Web Scraper
 def featured_image(browser):
     # Visit the NASA JPL (Jet Propulsion Laboratory) Site
@@ -82,8 +89,9 @@ def featured_image(browser):
     return img_url
 
 
-### Mars Weather
-
+#################################################
+# Mars Weather
+#################################################
 # Mars Weather Twitter Account Web Scraper
 def twitter_weather(browser):
     # Visit the Mars Weather Twitter Account
@@ -105,8 +113,9 @@ def twitter_weather(browser):
     return mars_weather
 
 
-### Mars Facts
-
+#################################################
+# Mars Facts
+#################################################
 # Mars Facts Web Scraper
 def mars_facts():
     # Visit the Mars Facts Site Using Pandas to Read
@@ -119,8 +128,10 @@ def mars_facts():
 
     return df.to_html(classes="table table-striped")
 
-### Mars Hemispheres
 
+#################################################
+# Mars Hemispheres
+#################################################
 # Mars Hemispheres Web Scraper
 def hemisphere(browser):
     # Visit the USGS Astrogeology Science Center Site
@@ -166,7 +177,9 @@ def scrape_hemisphere(html_text):
     }
     return hemisphere
 
+#################################################
 # Main We Scraping Bot
+#################################################
 def scrape_all(): 
     executable_path = {"executable_path": "/usr/local/bin/chromedriver"}
     browser = Browser("chrome", **executable_path, headless=False)
