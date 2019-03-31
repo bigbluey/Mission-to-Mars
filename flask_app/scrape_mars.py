@@ -162,9 +162,9 @@ def hemisphere(browser):
         browser.back()
     return hemisphere_image_urls
 
+# Helper Function
 def scrape_hemisphere(html_text):
     hemisphere_soup = BeautifulSoup(html_text, "html.parser")
-
     try: 
         title_element = hemisphere_soup.find("h2", class_="title").get_text()
         sample_element = hemisphere_soup.find("a", text="Sample").get("href")
@@ -177,12 +177,11 @@ def scrape_hemisphere(html_text):
     }
     return hemisphere
 
+
 #################################################
-# Main We Scraping Bot
+# Main Web Scraping Bot
 #################################################
-def scrape_all(): 
-    executable_path = {"executable_path": "/usr/local/bin/chromedriver"}
-    browser = Browser("chrome", **executable_path, headless=False)
+def scrape_all(browser): 
     news_title, news_paragraph = mars_news(browser)
     img_url = featured_image(browser)
     mars_weather = twitter_weather(browser)
