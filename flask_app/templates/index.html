@@ -34,6 +34,17 @@
             <img src="{{mars.featured_image | default('static/images/error.png', true) }}" class="img-responsive"
             alt="Responsive image">
         </div>
-
+        <div class="col-md-4">
+          <!-- Mars Weather -->
+          <div class="row" id="mars-weather">
+            <div class="col-md-12">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <h4>Current Weather on Mars</h4>
+                        <p>{{mars.weather}}</p>
+                    </div>
+                </div>
+            </div>
+          </div>
 </body>
 </html>
