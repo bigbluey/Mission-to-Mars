@@ -181,7 +181,9 @@ def scrape_hemisphere(html_text):
 #################################################
 # Main Web Scraping Bot
 #################################################
-def scrape_all(browser): 
+def scrape_all():
+    executable_path = {"executable_path": "/usr/local/bin/chromedriver"}
+    browser = Browser("chrome", **executable_path, headless=False)
     news_title, news_paragraph = mars_news(browser)
     img_url = featured_image(browser)
     mars_weather = twitter_weather(browser)
