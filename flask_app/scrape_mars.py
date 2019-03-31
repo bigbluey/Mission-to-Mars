@@ -1,7 +1,5 @@
-#!/usr/bin/env python
-# coding: utf-8
+# Jupyter Notebook Conversion Into Python Script
 
-# Mission to Mars
 
 # Dependencies and Setup
 from bs4 import BeautifulSoup
@@ -19,7 +17,7 @@ browser = Browser("chrome", **executable_path, headless=False)
 # executable_path = {"executable_path": "./chromedriver.exe"}
 # browser = Browser("chrome", **executable_path)
 
-######## NEW ########
+
 ### NASA Mars News
 
 # NASA Mars News Site Web Scraper
@@ -123,41 +121,73 @@ def mars_facts():
 
 ### Mars Hemispheres
 
+# Mars Hemispheres Web Scraper
+def hemisphere(browser):
+    # Visit the USGS Astrogeology Science Center Site
+    url = "https://astrogeology.usgs.gov/search/results?q=hemisphere+enhanced&k1=target&v1=Mars"
+    browser.visit(url)
 
-###### OLD #######
+    hemisphere_image_urls = []
 
+    # Get a List of All the Hemisphere
+    links = browser.find_by_css("a.product-item h3")
+    for item in range(len(links)):
+        hemisphere = {}
+        
+        # Find Element on Each Loop to Avoid a Stale Element Exception
+        browser.find_by_css("a.product-item h3")[item].click()
+        
+        # Find Sample Image Anchor Tag & Extract <href>
+        sample_element = browser.find_link_by_text("Sample").first
+        hemisphere["img_url"] = sample_element["href"]
+        
+        # Get Hemisphere Title
+        hemisphere["title"] = browser.find_by_css("h2.title").text
+        
+        # Append Hemisphere Object to List
+        hemisphere_image_urls.append(hemisphere)
+        
+        # Navigate Backwards
+        browser.back()
+    return hemisphere_image_urls
 
+def scrape_hemisphere(html_text):
+    hemisphere_soup = BeautifulSoup(html_text, "html.parser")
 
-### Mars Hemispheres
+    try: 
+        title_element = hemisphere_soup.find("h2", class_="title").get_text()
+        sample_element = hemisphere_soup.find("a", text="Sample").get("href")
+    except AttributeError:
+        title_element = None
+        sample_element = None 
+    hemisphere = {
+        "title": title_element,
+        "img_url": sample_element
+    }
+    return hemisphere
 
-# Visit the USGS Astrogeology Science Center SIte
-executable_path = {"executable_path": "/usr/local/bin/chromedriver"}
-browser = Browser("chrome", **executable_path, headless=False)
-url = "https://astrogeology.usgs.gov/search/results?q=hemisphere+enhanced&k1=target&v1=Mars"
-browser.visit(url)
+# Main We Scraping Bot
+def scrape_all(): 
+    executable_path = {"executable_path": "/usr/local/bin/chromedriver"}
+    browser = Browser("chrome", **executable_path, headless=False)
+    news_title, news_paragraph = mars_news(browser)
+    img_url = featured_image(browser)
+    mars_weather = twitter_weather(browser)
+    facts = mars_facts()
+    hemisphere_image_urls = hemisphere(browser)
+    timestamp = dt.datetime.now()
 
+    data = {
+        "news_title": news_title,
+        "news_paragraph": news_paragraph,
+        "featured_image": img_url,
+        "weather": mars_weather,
+        "facts": facts,
+        "hemispheres": hemisphere_image_urls,
+        "last_modified": timestamp
+    }
+    browser.quit()
+    return data 
 
-hemisphere_image_urls = []
-
-# First Get a List of All the Hemispheres
-links = browser.find_by_css("a.product-item h3")
-for item in range(len(links)):
-    hemisphere = {}
-    
-    # Find Element on Each Loop to Avoid a Stale Element Exception
-    browser.find_by_css("a.product-item h3")[item].click()
-    
-    # Find Sample Image Anchor Tag & Extract <href>
-    sample_element = browser.find_link_by_text("Sample").first
-    hemisphere["img_url"] = sample_element["href"]
-    
-    # Get Hemisphere Title
-    hemisphere["title"] = browser.find_by_css("h2.title").text
-    
-    # Append Hemisphere Object to List
-    hemisphere_image_urls.append(hemisphere)
-    
-    # Navigate Backwards
-    browser.back()
-
-hemisphere_image_urls
+if __name__ == "__main__":
+    print(scrape_all())
