@@ -9,70 +9,72 @@
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 </head> 
 <body class="text-white" style="background-color: black;">
-  <div class="container">
-    <!-- Jumbotron -->
-    <!--IMAGES: https://images5.alphacoders.com/508/508358.jpg / https://i.gifer.com/8Gsl.gif-->
-    <div class="jumbotron text-center" style="background-image: url(https://i.gifer.com/embedded/download/NRfS.gif); height: 400px; background-position: center; background-size: cover;">
-      <h1 class="display-3">Mission to Mars</h1>
-        <p><a class="btn btn-danger btn-lg" href="/scrape" role="button">Scrape New Data</a></p>
-    </div>
-    <!-- NASA Mars News -->
     <div class="container">
-      <div class="row" id="mars-news">
-        <div class="media">
-          <div class="media-body">
-            <h4>Latest Mars News</h4>
-            <h5 class="media-heading">{{mars.news_title}}</h5>
-            <p>{{mars.news_paragraph}}</p>
-          </div>
+        <!-- Jumbotron -->
+        <!--IMAGES: https://images5.alphacoders.com/508/508358.jpg / https://vfxblog.com/wp-content/uploads/2016/12/marsattacks1b.jpg / https://i.gifer.com/embedded/download/NRfS.gif -->
+        <div class="jumbotron text-center" style="background-image: url(http://gortoncenter.org/wp-content/uploads/2018/05/The-Martian.jpg); height: 400px; background-position: center; background-size: cover;">
+            <h1 class="display-3"><b>Mission to Mars</b></h1>
+            <p><a class="btn btn-danger btn-lg" href="/scrape" role="button">Scrape New Data</a></p>
         </div>
-      </div>
-    </div>
-    <!-- JPL Mars Space Images - Featured Image -->
-    <div class="row" id="mars-featured-image">
-        <div class="col-lg-8 col-md-8 col-sm-12">
-          <h4>Featured Mars Image</h4>
-            <!-- If Images are False/None/Non-Existent, Then Default to Error Message -->
-            <img src="{{mars.featured_image | default('static/images/error.png', true) }}" class="img-responsive" alt="Responsive Image"/>
-        </div>
-        <div class="col-md-4">
-          <!-- Mars Weather -->
-          <div class="row" id="mars-weather">
-            <div class="col-lg-4 col-md-4 col-sm-12">
-                <div class="panel panel-default">
-                    <div class="panel-body">
-                        <h4>Current Weather on Mars</h4>
-                        <p>{{mars.weather}}</p>
+        <!-- NASA Mars News -->
+        <div class="container">
+            <div class="row" id="mars-news">
+                <div class="media">
+                    <div class="media-body">
+                        <h4>Latest Mars News</h4>
+                        <h5 style="color: #DC143C">{{mars.news_title}}</h5>
+                        <p style="color: #8B0000">{{mars.news_paragraph}}</p>
                     </div>
                 </div>
             </div>
-          </div>
-          <!-- Mars Facts -->
-          <div class="row" id="mars-facts">
-            <div class="col-md-12">
-              <h4>Mars Facts</h4>
-              {{mars.facts | safe}}
+        </div>   
+        <!-- JPL Mars Space Images - Featured Image -->
+        <div class="container">
+            <div class="row" id="mars-featured-image">
+                <div class="col-lg-8 col-md-8 col-sm-12">
+                <h4>Featured Mars Image</h4>
+                    <!-- If Images are False/None/Non-Existent, Then Default to Error Message -->
+                    <img src="{{mars.featured_image | default('static/images/error.png', true) }}" class="img-responsive" style="max-width:100%; max-height: auto;" alt="Mars Featured Image"/>
+                </div>
+                <!-- Mars Weather -->
+                <div class="col-lg-4 col-md-4 col-sm-12" id="mars-weather">
+                    <div class="card" style="max-width: 18rem;">
+                        <div class="card-body text-white bg-danger">
+                            <h4 class="card-title">Current Weather on Mars</h4>
+                            <p class="card-text">{{mars.weather}}</p>
+                        </div>
+                    </div>
+                    <!-- Mars Facts -->
+                    <br>
+                    <div class="row" id="mars-facts">
+                        <div class="col-md-12">
+                            <h4>Mars Facts</h4>
+                            {{mars.facts | safe}}
+                        </div>
+                    </div>
+                </div>
             </div>
-          </div>
         </div>
-      </div>
-      <!-- Mars Hemispheres -->
-      <div class="row" id="mars-hemispheres" style="margin-top:80px;">
-        <div class="page-header">
-          <h4 class="text-center">Mars Hemispheres</h4>
+        <!-- Mars Hemispheres -->
+        <h4 style="padding-top: 50px; margin-top: 100px; text-align: center;">Mars Hemispheres</h4>
+        <div class="card-deck">
+            <hr>
+            <div class="col-md-12">
+                <div class="row" id="mars-hemispheres">
+                    {% for hemisphere in mars.hemispheres %}
+                    <div class="col-md-6">
+                        <div class="card text-white bg-danger" style="margin: 30px;">
+                            <!-- If Images are False/None/Non-Existent, Then Default to Error Message -->
+                            <img class="card-img-top" src="{{hemisphere.img_url | default('static/images/error.png', true)}}" alt="..."/>
+                            <div class="card-body">
+                                <p class="card-text">{{hemisphere.title}}</p>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
         </div>
-        {% for hemisphere in mars.hemispheres %}
-          <div class="col-md-6">
-              <div class="thumbnail">
-              <!-- If Images are False/None/Non-Existent, Then Default to Error Message -->
-              <img src="{{hemisphere.img_url | default('static/images/error.png', true)}}" alt="..."/>
-              <div class="caption">
-                  <h4>{{hemisphere.title}}</h4>
-              </div>
-              </div>
-          </div>
-        {% endfor %}
-      </div>
     </div>
     <!-- Bootstrap JavaScript -->
     <!-- jQuery, Popper.js & Bootstrap JS -->
